@@ -1,0 +1,27 @@
+version: "3"
+services:
+  www.foo.com:
+    build: ../../www.foo.com
+    image: compose-dns
+    restart: always
+    depends_on:
+      - redis
+      - database    
+
+  base:
+    build: ../../base
+    image: alpine
+    restart: always
+    depends_on:
+      - redis
+      - database  
+      - www.foo.com  
+
+  redis:
+    image: redis
+    restart: always
+  
+  database:
+    image: mysql
+    env_file: .default-env
+    restart: always
